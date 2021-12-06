@@ -1,5 +1,6 @@
 spring:
-  security:
-    user:
-      name: eazybytes
-      password: 12345
+  datasource:
+    name: ds-mysql
+    url: jdbc:mysql://localhost:3306/eazybytes
+    username: root
+    password: devdojo
