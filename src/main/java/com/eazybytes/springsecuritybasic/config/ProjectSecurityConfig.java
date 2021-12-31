@@ -24,6 +24,7 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
             config.setMaxAge(3600L);
             return config;
         }).and().
+                csrf().disable().
                 authorizeRequests().antMatchers("/myAccount").authenticated()
                 .antMatchers("/myBalance").authenticated()
                 .antMatchers("/myLoans").authenticated()
