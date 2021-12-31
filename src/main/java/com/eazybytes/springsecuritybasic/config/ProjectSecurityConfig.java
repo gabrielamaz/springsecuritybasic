@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collections;
@@ -24,7 +25,8 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
             config.setMaxAge(3600L);
             return config;
         }).and().
-                csrf().disable().
+                csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and().
                 authorizeRequests().antMatchers("/myAccount").authenticated()
                 .antMatchers("/myBalance").authenticated()
                 .antMatchers("/myLoans").authenticated()
