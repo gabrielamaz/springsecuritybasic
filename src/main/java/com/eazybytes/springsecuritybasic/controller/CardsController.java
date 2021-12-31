@@ -1,15 +1,28 @@
 package com.eazybytes.springsecuritybasic.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.eazybytes.springsecuritybasic.model.Cards;
+import com.eazybytes.springsecuritybasic.model.Customer;
+import com.eazybytes.springsecuritybasic.repository.CardsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/myCards")
 public class CardsController {
 
-    @GetMapping
-    public String getCardsDetails(String input) {
-        return "Here are the card details from the DB";
+    @Autowired
+    private CardsRepository cardsRepository;
+
+    @PostMapping("/myCards")
+    public List<Cards> getCardsDetails(@RequestBody Customer customer) {
+        List<Cards> cards = cardsRepository.findByCustomerId(customer.getId());
+        if (cards != null) {
+            return cards;
+        } else {
+            return null;
+        }
     }
 }
