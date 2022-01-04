@@ -5,14 +5,12 @@ import com.eazybytes.springsecuritybasic.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 import java.util.Random;
 
 @RestController
-@RequestMapping("/contact")
 public class ContactController {
 
     @Autowired

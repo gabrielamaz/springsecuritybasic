@@ -10,7 +10,7 @@ import java.sql.Date;
 
 @Data
 @Entity
-@Table(name = "contact_message")
+@Table(name = "contact_messages")
 public class Contact {
 
     @Id
