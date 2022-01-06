@@ -19,11 +19,6 @@ public class RequestValidationBeforeFilter implements Filter {
     private Charset credentialsCharset = StandardCharsets.UTF_8;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
@@ -61,8 +56,4 @@ public class RequestValidationBeforeFilter implements Filter {
         return credentialsCharset;
     }
 
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
 }
