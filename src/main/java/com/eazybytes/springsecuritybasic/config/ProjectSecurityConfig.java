@@ -1,6 +1,7 @@
 package com.eazybytes.springsecuritybasic.config;
 
 import com.eazybytes.springsecuritybasic.filter.AuthoritiesLoggingAfterFilter;
+import com.eazybytes.springsecuritybasic.filter.AuthoritiesLoggingAtFilter;
 import com.eazybytes.springsecuritybasic.filter.RequestValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +37,7 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+        .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers("/myAccount")
         .hasRole("USER")
