@@ -7,12 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -20,7 +21,10 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.cors()
+    http.sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .cors()
         .configurationSource(
             request -> {
               CorsConfiguration config = new CorsConfiguration();
@@ -28,13 +32,11 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
               config.setAllowedMethods(Collections.singletonList("*"));
               config.setAllowCredentials(true);
               config.setAllowedHeaders(Collections.singletonList("*"));
+              config.setExposedHeaders(Arrays.asList("Authorization"));
               config.setMaxAge(3600L);
               return config;
             });
-    http.csrf()
-        .ignoringAntMatchers("/*")
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .and()
+    http.csrf().disable()
         .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
         .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
