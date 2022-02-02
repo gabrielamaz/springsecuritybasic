@@ -10,28 +10,26 @@ import java.util.Set;
 @Entity
 public class Customer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "customer_id")
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "customer_id")
+  private int id;
 
-    private String name;
+  private String name;
 
-    private String email;
+  private String email;
 
-    @Column(name = "mobile_number")
-    private String mobileNumber;
+  @Column(name = "mobile_number")
+  private String mobileNumber;
 
-    @JsonIgnore
-    private String pwd;
+  @JsonIgnore private String pwd;
 
-    private String role;
+  private String role;
 
-    @Column(name = "create_dt")
-    private String createDt;
+  @Column(name = "create_dt")
+  private String createDt;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    private Set<Authority> authorities;
-
+  @JsonIgnore
+  @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+  private Set<Authority> authorities;
 }

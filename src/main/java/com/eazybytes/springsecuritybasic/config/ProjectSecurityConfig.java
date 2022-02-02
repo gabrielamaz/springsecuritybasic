@@ -1,8 +1,6 @@
 package com.eazybytes.springsecuritybasic.config;
 
-import com.eazybytes.springsecuritybasic.filter.AuthoritiesLoggingAfterFilter;
-import com.eazybytes.springsecuritybasic.filter.AuthoritiesLoggingAtFilter;
-import com.eazybytes.springsecuritybasic.filter.RequestValidationBeforeFilter;
+import com.eazybytes.springsecuritybasic.filter.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,25 +34,20 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
               config.setMaxAge(3600L);
               return config;
             });
-    http.csrf().disable()
+    http.csrf()
+        .disable()
         .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+        .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+        .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
         .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("/myAccount")
-        .hasRole("USER")
-        .antMatchers("/myBalance")
-        .hasAnyRole("USER", "ADMIN")
-        .antMatchers("/myLoans")
-        .hasRole("ROOT")
-        .antMatchers("/myCards")
-        .authenticated()
-        .antMatchers("/notices")
-        .permitAll()
-        .antMatchers("/contact")
-        .permitAll()
-        .and()
-        .formLogin()
+        .antMatchers("/myAccount").hasRole("USER")
+        .antMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
+        .antMatchers("/myLoans").hasRole("ROOT")
+        .antMatchers("/myCards").authenticated()
+        .antMatchers("/notices").permitAll()
+        .antMatchers("/contact").permitAll()
         .and()
         .httpBasic();
   }
